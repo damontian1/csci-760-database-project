@@ -19,12 +19,81 @@ class DatabaseController extends Controller
 
     public function database_view(Request $request)
     {
-        // $invoice_data  = DB::select("SELECT * FROM 'Order', 'Items', 'Customer' WHERE customer_id = item_id");
-        // return response()->json($invoice_data);
-        // return view("database_view", [
-        //     'invoice_data' => $invoice_data
-        // ]);
-        return view("database_view");
+        // $TerritoryList  = DB::select("SELECT * FROM 'Territory'");
+        $TerritoryList  = DB::table('Territory')->get();
+        $SalesRepList  = DB::table('SalesRep')->get();
+        $CustomerList  = DB::table('Customer')->get();
+        $OrderList  = DB::table('Order')->get();
+        $PartList  = DB::table('Part')->get();
+
+        $OpenOrders  = DB::table('Part')
+            ->join('OrderPart', function ($join) {
+                $join->on('Part.PartNumber', '=', 'OrderPart.PartNumber');
+            })
+            ->join('Order', function ($join) {
+                $join->on('Order.OrderNumber', '=', 'OrderPart.OrderNumber')
+                ->where('OrderStatus', '=', 'open');
+            })
+            ->join('Customer', function ($join) {
+                $join->on('Order.CustomerNumber', '=', 'Customer.CustomerNumber');
+            })
+            ->get();
+
+        $Invoices  = DB::table('Part')
+            ->join('OrderPart', function ($join) {
+                $join->on('Part.PartNumber', '=', 'OrderPart.PartNumber');
+            })
+            ->join('Order', function ($join) {
+                $join->on('Order.OrderNumber', '=', 'OrderPart.OrderNumber')
+                ->where('OrderStatus', '=', 'close');
+            })
+            ->join('Customer', function ($join) {
+                $join->on('Order.CustomerNumber', '=', 'Customer.CustomerNumber');
+            })
+            ->get();
+        // dd($Invoices);
+        return view("database_view", [
+            'TerritoryList' => $TerritoryList,
+            'SalesRepList' => $SalesRepList,
+            'CustomerList' => $CustomerList,
+            'OrderList' => $OrderList,
+            'PartList' => $PartList,
+            'OpenOrders' => $OpenOrders,
+            'Invoices' => $Invoices,
+        ]);
+    }
+    public function database_view_invoice(Request $request, $id)
+    {
+        $Invoices = DB::table('Order')
+            ->where('Order.OrderStatus', '=', 'close')
+            ->where('Order.OrderNumber', '=', $id)
+            ->join('OrderPart', 'OrderPart.OrderNumber', '=', 'Order.OrderNumber')
+            ->join('Customer', 'Customer.CustomerNumber', '=', 'Order.CustomerNumber')
+            ->get();
+
+        return view("database_view_invoice", [
+            'Invoices' => $Invoices,
+        ]);
+        // $Invoices = DB::table('Customer')
+        //     ->join('Order', function ($join) use ($id) {
+        //         $join->on('Order.OrderNumber', '=', $id);
+        //         // ->where('OrderStatus', '=', 'close');
+        //     })
+        //     ->join('OrderPart', function ($join) {
+        //         $join->on('Part.PartNumber', '=', 'OrderPart.PartNumber');
+        //     })
+        //     ->join('Customer', function ($join) {
+        //         $join->on('Order.CustomerNumber', '=', 'Customer.CustomerNumber');
+        //     })
+        //     ->get();
+            // dd($Invoices);
+        // return $id;
+        // $test = DB::table('Order')
+        //     ->where('OrderNumber', '=', $request->input('OrderNumber'))
+        //     ->update([
+        //         'OrderStatus' => $request->input('OrderStatus'),
+        //     ]);
+        // return back()->with('success', 'Success!');
     }
     public function database_actions_territory(Request $request)
     {
@@ -60,15 +129,39 @@ class DatabaseController extends Controller
     {
         DB::table('Customer')->insert([
             [
-                'customer_name' => $request->input('customer_name'),
-                'customer_address' => $request->input('customer_address'),
-                'customer_city' => $request->input('customer_city'),
-                'customer_state' => $request->input('customer_state'),
-                'customer_zip' => $request->input('customer_zip'),
-                'customer_mtd_sales' => $request->input('customer_mtd_sales'),
-                'customer_ytd_sales' => $request->input('customer_ytd_sales'),
-                'customer_balance' => $request->input('customer_balance'),
-                'customer_credit_limit' => $request->input('customer_credit_limit')
+
+                'SalesRepNumber' => $request->input('SalesRepNumber'),
+                'CustomerFirstName' => $request->input('CustomerFirstName'),
+                'CustomerLastName' => $request->input('CustomerLastName'),
+                'CustomerAddress' => $request->input('CustomerAddress'),
+                'CustomerCity' => $request->input('CustomerCity'),
+                'CustomerState' => $request->input('CustomerState'),
+                'CustomerZip' => $request->input('CustomerZip'),
+                'CustomerMTDSales' => $request->input('CustomerMTDSales'),
+                'CustomerYTDSales' => $request->input('CustomerYTDSales'),
+                'CurrentBalance' => $request->input('CurrentBalance'),
+                'CreditLimit' => $request->input('CreditLimit'),
+                'CustomerShipFirstName' => $request->input('CustomerShipFirstName'),
+                'CustomerShipLastName' => $request->input('CustomerShipLastName'),
+                'CustomerShipAddress' => $request->input('CustomerShipAddress'),
+                'CustomerShipCity' => $request->input('CustomerShipCity'),
+                'CustomerShipState' => $request->input('CustomerShipState'),
+                'CustomerShipZip' => $request->input('CustomerShipZip'),
+            ]
+        ]);
+        return back()->with('success', 'Success!');
+    }
+    public function database_actions_part(Request $request)
+    {
+        DB::table('Part')->insert([
+            [
+                'PartDescription' => $request->input('PartDescription'),
+                'PartPrice' => $request->input('PartPrice'),
+                'PartMTDSales' => $request->input('PartMTDSales'),
+                'PartYTDSales' => $request->input('PartYTDSales'),
+                'UnitsOnHand' => $request->input('UnitsOnHand'),
+                'UnitsAllocated' => $request->input('UnitsAllocated'),
+                'RecorderPoint' => $request->input('RecorderPoint'),
             ]
         ]);
         return back()->with('success', 'Success!');
@@ -77,33 +170,41 @@ class DatabaseController extends Controller
     {
         DB::table('Vendor')->insert([
             [
-                'vendor_name' => $request->input('vendor_name'),
-                'vendor_address' => $request->input('vendor_address'),
-                'vendor_city' => $request->input('vendor_city'),
-                'vendor_state' => $request->input('vendor_state'),
-                'vendor_zip' => $request->input('vendor_zip')
-            ]
-        ]);
-        return back()->with('success', 'Success!');
-    }
-    public function database_actions_item(Request $request)
-    {
-        DB::table('Items')->insert([
-            [
-                'item_description' => $request->input('item_description'),
-                'item_price' => $request->input('item_price'),
+                'VendorName' => $request->input('VendorName'),
+                'VendorAddress' => $request->input('VendorAddress'),
+                'VendorCity' => $request->input('VendorCity'),
+                'VendorState' => $request->input('VendorState'),
+                'VendorZip' => $request->input('VendorZip')
             ]
         ]);
         return back()->with('success', 'Success!');
     }
     public function database_actions_order(Request $request)
     {
-        DB::table('Order')->insert([
+        $id = DB::table('Order')->insertGetId(
             [
-                'customer_id' => $request->input('customer_id'),
-                'item_id' => $request->input('item_id'),
+                'OrderDate' => $request->input('OrderDate'),
+                'CustomerNumber' => $request->input('CustomerNumber'),
+                'CustomerPONumber' => $request->input('CustomerPONumber'),
+                'OrderStatus' => "open",
+            ]
+        );
+        DB::table('OrderPart')->insert([
+            [
+                'OrderNumber' => $id,
+                'PartNumber' => $request->input('PartNumber'),
+                'NumberOrdered' => $request->input('NumberOrdered'),
             ]
         ]);
+        return back()->with('success', 'Success!');
+    }
+    public function database_actions_order_status(Request $request)
+    {
+        $test = DB::table('Order')
+            ->where('OrderNumber', '=', $request->input('OrderNumber'))
+            ->update([
+                'OrderStatus' => $request->input('OrderStatus'),
+            ]);
         return back()->with('success', 'Success!');
     }
 }

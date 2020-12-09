@@ -23,5 +23,8 @@ Route::post('/database_actions_territory', 'App\Http\Controllers\DatabaseControl
 Route::post('/database_actions_sales_rep', 'App\Http\Controllers\DatabaseController@database_actions_sales_rep');
 Route::post('/database_actions_customer', 'App\Http\Controllers\DatabaseController@database_actions_customer');
 Route::post('/database_actions_vendor', 'App\Http\Controllers\DatabaseController@database_actions_vendor');
-Route::post('/database_actions_item', 'App\Http\Controllers\DatabaseController@database_actions_item');
+Route::post('/database_actions_part', 'App\Http\Controllers\DatabaseController@database_actions_part');
 Route::post('/database_actions_order', 'App\Http\Controllers\DatabaseController@database_actions_order');
+Route::post('/database_actions_order_part', 'App\Http\Controllers\DatabaseController@database_actions_order_part');
+Route::post('/database_actions_order_status', 'App\Http\Controllers\DatabaseController@database_actions_order_status');
+Route::get('/database_view_invoice/{id}', 'App\Http\Controllers\DatabaseController@database_view_invoice');
