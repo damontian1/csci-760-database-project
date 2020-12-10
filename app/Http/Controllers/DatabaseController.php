@@ -19,12 +19,12 @@ class DatabaseController extends Controller
 
     public function database_view(Request $request)
     {
-        // $TerritoryList  = DB::select("SELECT * FROM 'Territory'");
-        $TerritoryList  = DB::table('Territory')->get();
-        $SalesRepList  = DB::table('SalesRep')->get();
-        $CustomerList  = DB::table('Customer')->get();
-        $OrderList  = DB::table('Order')->get();
-        $PartList  = DB::table('Part')->get();
+        // $TerritoryData  = DB::select("SELECT * FROM 'Territory'");
+        $TerritoryData  = DB::table('Territory')->get();
+        $SalesRepData  = DB::table('SalesRep')->get();
+        $CustomerData  = DB::table('Customer')->get();
+        $OrderData  = DB::table('Order')->get();
+        $PartData  = DB::table('Part')->get();
 
         $OpenOrders  = DB::table('Part')
             ->join('OrderPart', function ($join) {
@@ -50,27 +50,55 @@ class DatabaseController extends Controller
             ->join('Customer', function ($join) {
                 $join->on('Order.CustomerNumber', '=', 'Customer.CustomerNumber');
             })
+            ->join('SalesRep', 'SalesRep.SalesRepNumber', '=', 'Customer.SalesRepNumber')
             ->get();
         // dd($Invoices);
         return view("database_view", [
-            'TerritoryList' => $TerritoryList,
-            'SalesRepList' => $SalesRepList,
-            'CustomerList' => $CustomerList,
-            'OrderList' => $OrderList,
-            'PartList' => $PartList,
+            'TerritoryData' => $TerritoryData,
+            'SalesRepData' => $SalesRepData,
+            'CustomerData' => $CustomerData,
+            'OrderData' => $OrderData,
+            'PartData' => $PartData,
             'OpenOrders' => $OpenOrders,
             'Invoices' => $Invoices,
+        ]);
+    }
+    public function database_view_territory_list(Request $request)
+    {
+        // $TerritoryList  = DB::table('Territory')
+        //     ->join('SalesRep', 'SalesRep.TerritoryNumber', '=', 'Territory.TerritoryNumber')
+        //     ->join('Customer', 'Customer.SalesRepNumber', '=', 'SalesRep.SalesRepNumber')
+        //     ->get();
+        $TerritoryList  = DB::table('Customer')
+            ->join('SalesRep', 'SalesRep.TerritoryNumber', '=', 'Territory.TerritoryNumber')
+            ->join('Territory', 'Territory.TerritoryNumber', '=', 'SalesRep.TerritoryNumber')
+            ->get();
+        // dd($TerritoryList);
+        return view("database_view_territory_list", [
+            'TerritoryList' => $TerritoryList
+        ]);
+    }
+    public function database_view_customer_master_list(Request $request)
+    {
+        $CustomerMasterList  = DB::table('Customer')
+            ->join('SalesRep', 'SalesRep.TerritoryNumber', '=', 'Territory.TerritoryNumber')
+            ->join('Territory', 'Territory.TerritoryNumber', '=', 'SalesRep.TerritoryNumber')
+            ->get();
+        // dd($CustomerMasterList);
+        return view("database_view_customer_master_list", [
+            'CustomerMasterList' => $CustomerMasterList
         ]);
     }
     public function database_view_invoice(Request $request, $id)
     {
         $Invoices = DB::table('Order')
-            ->where('Order.OrderStatus', '=', 'close')
+            // ->where('Order.OrderStatus', '=', 'close')
             ->where('Order.OrderNumber', '=', $id)
             ->join('OrderPart', 'OrderPart.OrderNumber', '=', 'Order.OrderNumber')
             ->join('Customer', 'Customer.CustomerNumber', '=', 'Order.CustomerNumber')
+            ->join('Part', 'Part.PartNumber', '=', 'OrderPart.PartNumber')
             ->get();
-
+            // dd($Invoices);
         return view("database_view_invoice", [
             'Invoices' => $Invoices,
         ]);
@@ -86,7 +114,6 @@ class DatabaseController extends Controller
         //         $join->on('Order.CustomerNumber', '=', 'Customer.CustomerNumber');
         //     })
         //     ->get();
-            // dd($Invoices);
         // return $id;
         // $test = DB::table('Order')
         //     ->where('OrderNumber', '=', $request->input('OrderNumber'))
@@ -94,6 +121,17 @@ class DatabaseController extends Controller
         //         'OrderStatus' => $request->input('OrderStatus'),
         //     ]);
         // return back()->with('success', 'Success!');
+    }
+    public function database_view_customer_mailing_labels(Request $request)
+    {
+        $CustomerMailingLabels  = DB::table('Customer')->get();
+        //     ->join('SalesRep', 'SalesRep.TerritoryNumber', '=', 'Territory.TerritoryNumber')
+        //     ->join('Territory', 'Territory.TerritoryNumber', '=', 'SalesRep.TerritoryNumber')
+        //     ->get();
+        // // dd($CustomerMasterList);
+        return view("database_view_customer_mailing_labels", [
+            'CustomerMailingLabels' => $CustomerMailingLabels
+        ]);
     }
     public function database_actions_territory(Request $request)
     {
@@ -181,6 +219,7 @@ class DatabaseController extends Controller
     }
     public function database_actions_order(Request $request)
     {
+        // dd($request->input('CustomerNumber'));
         $id = DB::table('Order')->insertGetId(
             [
                 'OrderDate' => $request->input('OrderDate'),
@@ -200,11 +239,14 @@ class DatabaseController extends Controller
     }
     public function database_actions_order_status(Request $request)
     {
-        $test = DB::table('Order')
+        DB::table('Order')
             ->where('OrderNumber', '=', $request->input('OrderNumber'))
             ->update([
                 'OrderStatus' => $request->input('OrderStatus'),
             ]);
+
+        // by this step, the invoice is closed.. so over here increase customer balance by order total
+
         return back()->with('success', 'Success!');
     }
 }

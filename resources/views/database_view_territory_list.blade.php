@@ -3,14 +3,15 @@
 @section("content")
 
 <div class="max-w-4xl mx-auto my-16 p-10 w-full border-2 shadow-xl">
-  <h1 class="text-4xl font-extrabold mb-10 text-center">Invoice</h1>
-  <div class="section__a flex flex-wrap">
-    <p class="w-1/3 flex justify-center">5/30/2013</p>
-    <p class="w-1/3 flex justify-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum vel a dolor laudantium rerum illum!</p>
-    <p class="w-1/3 flex justify-center">Invoice No. : 11290</p>
+  <h1 class="text-4xl font-extrabold mb-10 text-center">Territory List</h1>
+  <div class="section__a flex justify-between mb-14">
+    <p>05/30/2013</p>
+    <p>Holt Distributors Customer Open Order Report</p>
+    <p>Invoice No. : 11290</p>
   </div>
-  <div class="section__b">
-      <div class="container mx-auto px-4 sm:px-8 bg-white px-4 py-8 p-5">
+  <div class="section__b flex flex-col space-y-4">
+
+          <div class="container mx-auto bg-white py-8">
             <div class="py-8">
               <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                 <div class="inline-block min-w-full rounded-sm overflow-hidden">
@@ -18,34 +19,45 @@
                     <thead>
                       <tr>
                         <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                          Territory #
+                        </th>
+                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                        Territory Name
+                        </th>
+                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                          Sales Rep #
+                        </th>
+                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                          Sales Rep Name
+                        </th>
+                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                          Sales Rep Address
+                        </th>
+                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
                           Customer #
                         </th>
                         <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Customer PO #
+                          Customer Name
                         </th>
                         <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Order Date
-                        </th>
-                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Sales Rep
+                          Customer Address
                         </th>
                       </tr>
                     </thead>
 
 
-                    @isset ($Invoices)
+                    @isset ($TerritoryList)
 
 
 
-                    @foreach ($Invoices as $data)
-                    @if ($loop->first)
+                    @foreach ($TerritoryList as $data)
                     <tbody>
                       <tr>
                         <td class="py-5 border-b border-gray-200 bg-white text-sm">
                           <div class="flex items-center">
                             <div class="ml-3">
                               <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $data->CustomerNumber }}
+                                {{ $data->TerritoryNumber }}
                               </p>
                             </div>
                           </div>
@@ -54,16 +66,7 @@
                           <div class="flex items-center">
                             <div class="ml-3">
                               <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $data->CustomerPONumber }}
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="py-5 border-b border-gray-200 bg-white text-sm">
-                          <div class="flex items-center">
-                            <div class="ml-3">
-                              <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $data->OrderDate }}
+                                {{ $data->TerritoryName }}
                               </p>
                             </div>
                           </div>
@@ -77,47 +80,11 @@
                             </div>
                           </div>
                         </td>
-                      </tr>
-                    </tbody>
-                    @endif
-                    @endforeach
-                    @endisset
-                  </table>
-                  <table class="min-w-full leading-normal border">
-                    <thead>
-                      <tr>
-                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Part #
-                        </th>
-                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Part Description
-                        </th>
-                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Part Price
-                        </th>
-                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Quantity
-                        </th>
-                        <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                          Amount
-                        </th>
-                      </tr>
-                    </thead>
-
-
-                    @isset ($Invoices)
-
-
-
-                    @foreach ($Invoices as $data)
-
-                    <tbody>
-                      <tr>
                         <td class="py-5 border-b border-gray-200 bg-white text-sm">
                           <div class="flex items-center">
                             <div class="ml-3">
                               <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $data->PartNumber }}
+                                {{ $data->SalesRepName }}
                               </p>
                             </div>
                           </div>
@@ -126,7 +93,7 @@
                           <div class="flex items-center">
                             <div class="ml-3">
                               <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $data->PartDescription }}
+                                {{ $data->SalesRepAddress }}
                               </p>
                             </div>
                           </div>
@@ -135,7 +102,7 @@
                           <div class="flex items-center">
                             <div class="ml-3">
                               <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $data->PartPrice }}
+                                {{ $data->CustomerNumber }}
                               </p>
                             </div>
                           </div>
@@ -144,7 +111,7 @@
                           <div class="flex items-center">
                             <div class="ml-3">
                               <p class="text-gray-900 whitespace-no-wrap">
-                                QUANTITY
+                                {{ $data->CustomerFirstName . ' ' .$data->CustomerLastName }}
                               </p>
                             </div>
                           </div>
@@ -153,7 +120,7 @@
                           <div class="flex items-center">
                             <div class="ml-3">
                               <p class="text-gray-900 whitespace-no-wrap">
-                                AMOUNT
+                                {{ $data->CustomerAddress }}
                               </p>
                             </div>
                           </div>
@@ -167,6 +134,8 @@
               </div>
             </div>
           </div>
+
+
   </div>
 </div>
 

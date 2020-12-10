@@ -28,3 +28,6 @@ Route::post('/database_actions_order', 'App\Http\Controllers\DatabaseController@
 Route::post('/database_actions_order_part', 'App\Http\Controllers\DatabaseController@database_actions_order_part');
 Route::post('/database_actions_order_status', 'App\Http\Controllers\DatabaseController@database_actions_order_status');
 Route::get('/database_view_invoice/{id}', 'App\Http\Controllers\DatabaseController@database_view_invoice');
+Route::get('/database_view_territory_list', 'App\Http\Controllers\DatabaseController@database_view_territory_list');
+Route::get('/database_view_customer_master_list', 'App\Http\Controllers\DatabaseController@database_view_customer_master_list');
+Route::get('/database_view_customer_mailing_labels', 'App\Http\Controllers\DatabaseController@database_view_customer_mailing_labels');

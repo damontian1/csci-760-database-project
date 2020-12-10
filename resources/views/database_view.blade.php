@@ -1,33 +1,19 @@
 @extends("layouts.app")
-
 @section("content")
-<script>
-  function changeOrderStatus () {
-    document.querySelector("#orderStatusDropDown").submit()
-  }
-</script>
-<!-- <h1>Find your Sales Rep</h1>
-<label for="">Enter your Sales Rep Number</label>
-<input type="text" style="max-width: 500px">
-<input type="submit"> -->
 
 @if (session('success'))
-	 <!-- Alert Success -->
-	 <div
-         class="bg-green-100 flex items-center mx-2 mx-auto px-6 py-4 rounded-md text-lg"
-         >
-      <svg
-           viewBox="0 0 24 24"
-           class="text-green-600 w-5 h-5 sm:w-5 sm:h-5 mr-3"
-           >
-        <path
-              fill="currentColor"
-              d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z"
-              ></path>
-      </svg>
-      <span class="text-green-800">{{ session('success') }}</span>
-    </div>
-    <!-- End Alert Success -->
+<div class="bg-green-100 flex items-center mx-2 mx-auto px-6 py-4 rounded-md text-lg">
+  <svg
+  viewBox="0 0 24 24"
+  class="text-green-600 w-5 h-5 sm:w-5 sm:h-5 mr-3"
+  >
+    <path
+    fill="currentColor"
+    d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z"
+    ></path>
+  </svg>
+  <span class="text-green-800">{{ session('success') }}</span>
+</div>
 @endif
 
 <div class="bg-white flex flex-col p-8 items-center">
@@ -90,6 +76,13 @@
       >
         invoices
       </button>
+			<button
+        x-on:click="tab = 'reports'"
+        x-bind:class="{ 'bg-yellow-500 font-bold': tab === 'reports' }"
+        class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
+      >
+        reports
+      </button>
     </nav>
     <ul class="bg-gray-100 text-sm px-8 py-12" style="border: 1px solid #ccc">
 
@@ -103,10 +96,12 @@
 				<label class="block">
 					<span class="text-gray-900">TerritoryName</span>
 					<input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="TerritoryName">
-				</label>
-				<button type="submit" class="block ml-auto mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-							Save
-						</button>
+        </label>
+        <div class="flex justify-end space-x-1">
+          <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                Save
+              </button>
+        </div>
 				</form>
 
 
@@ -122,7 +117,7 @@
           <span class="text-gray-900">Territory</span>
           <select class="w-full border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" name="TerritoryNumber">
             <option>Choose a Territory</option>
-            @foreach ($TerritoryList as $item)
+            @foreach ($TerritoryData as $item)
               <option value="$item->TerritoryNumber">{{ $item->TerritoryNumber }}-{{ $item->TerritoryName }}</option>
             @endforeach
           </select>
@@ -167,9 +162,11 @@
           <span class="text-gray-900">SalesRepCommissionRate</span>
           <input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="SalesRepCommissionRate">
         </label>
-				<button type="submit" class="block ml-auto mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-							Save
-						</button>
+				<div class="flex justify-end space-x-1">
+          <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                Save
+              </button>
+        </div>
 				</form>
         </div>
       </li>
@@ -183,7 +180,7 @@
           <span class="text-gray-900">Sales Rep</span>
           <select class="w-full border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" name="SalesRepNumber">
             <option>Choose a Sales Rep</option>
-            @foreach ($SalesRepList as $item)
+            @foreach ($SalesRepData as $item)
               <option value="{{ $item->SalesRepNumber }}">{{ $item->SalesRepNumber }}-{{ $item->SalesRepName }}</option>
             @endforeach
           </select>
@@ -341,7 +338,7 @@
             <span class="text-gray-900">Customer</span>
             <select class="w-full border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" name="CustomerNumber">
               <option>Choose a Customer</option>
-              @foreach ($CustomerList as $item)
+              @foreach ($CustomerData as $item)
                 <option value="{{ $item->CustomerNumber }}">{{ $item->CustomerNumber }}-{{ $item->CustomerFirstName }} {{ $item->CustomerLastName }}</option>
               @endforeach
             </select>
@@ -358,7 +355,7 @@
             <span class="text-gray-900">Part</span>
             <select class="w-full border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" name="PartNumber">
               <option>Choose a Part</option>
-              @foreach ($PartList as $item)
+              @foreach ($PartData as $item)
                 <option value="{{ $item->PartNumber }}">{{ $item->PartDescription }}</option>
               @endforeach
             </select>
@@ -367,19 +364,19 @@
             <span class="text-gray-900">Quantity</span>
             <input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="NumberOrdered">
           </label>
-          <!-- <div class="relative inline-flex flex-col" x-bind:class="{'hidden': !show}">
+          <div class="relative inline-flex flex-col" x-bind:class="{'hidden': !show}">
             <span class="text-gray-900">OrderNumber</span>
             <select class="w-full border-2 border-blue-700 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-blue-700 focus:outline-none appearance-none" name="CustomerNumber">
               <option>Choose a Customer</option>
-              @foreach ($OrderList as $item)
+              @foreach ($OrderData as $item)
                 <option value="{{ $item->OrderNumber }}">Order # {{ $item->OrderNumber }}</option>
               @endforeach
             </select>
-          </div> -->
+          </div>
           <div class="flex justify-end space-x-2">
-            <!-- <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
-                  Edit
-                </button> -->
+            <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
+                  Edit Order
+                </button>
             <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                   Save
                 </button>
@@ -400,9 +397,6 @@
                 <table class="min-w-full leading-normal">
                   <thead>
                     <tr>
-                      <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                        Invoice #
-                      </th>
                       <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
                         Customer #
                       </th>
@@ -428,11 +422,11 @@
                   </thead>
 
 
-                  @isset ($OpenOrders)
+                  @isset ($Invoices)
 
 
 
-                  @foreach ($OpenOrders as $data)
+                  @foreach ($Invoices as $data)
 
                   <tbody>
                     <tr>
@@ -449,25 +443,7 @@
                         <div class="flex items-center">
                           <div class="ml-3">
                             <p class="text-gray-900 whitespace-no-wrap">
-                              {{ $data->OrderNumber }}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="py-5 border-b border-gray-200 bg-white text-sm">
-                        <div class="flex items-center">
-                          <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                              {{ $data->PartNumber }}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="py-5 border-b border-gray-200 bg-white text-sm">
-                        <div class="flex items-center">
-                          <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                              {{ $data->PartDescription }}
+                              {{ $data->CustomerPONumber }}
                             </p>
                           </div>
                         </div>
@@ -485,7 +461,7 @@
                         <div class="flex items-center">
                           <div class="ml-3">
                             <p class="text-gray-900 whitespace-no-wrap">
-                              {{ $data->NumberOrdered }}
+                              {{ $data->SalesRepName }}
                             </p>
                           </div>
                         </div>
@@ -494,7 +470,16 @@
                         <div class="flex items-center">
                           <div class="ml-3">
                             <p class="text-gray-900 whitespace-no-wrap">
-                              ${{ number_format($data->PartPrice * $data->NumberOrdered, 2) }}
+                              {{ $data->CustomerAddress }}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="flex items-center">
+                          <div class="ml-3">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                              {{ $data->CustomerShipAddress }}
                             </p>
                           </div>
                         </div>
@@ -669,6 +654,24 @@
 
 
 
+      </li>
+
+
+      <li x-show="tab === 'reports'">
+        <div class="container mx-auto px-4 sm:px-8 bg-white px-4 py-8 p-5 border-2" style="border: 1px solid #ccc">
+          <h1 class="text-2xl font-extrabold">Open Orders</h1>
+          <div class="flex justify-end space-x-2">
+            <a href="/database_view_territory_list" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none hover:bg-blue-700 hover:text-white">
+                  View Territory List
+                </a>
+            <a href="/database_view_customer_master_list" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none hover:bg-blue-700 hover:text-white">
+                  View Customer Master List
+                </a>
+            <a href="/database_view_customer_mailing_labels" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none hover:bg-blue-700 hover:text-white">
+                  View Customer Mailing Labels
+                </a>
+          </div>
+        </div>
       </li>
     </ul>
   </div>
