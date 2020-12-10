@@ -5,17 +5,16 @@
 <div class="max-w-4xl mx-auto my-16 p-10 w-full border-2 shadow-xl">
   <h1 class="text-4xl font-extrabold mb-10 text-center">Territory List</h1>
   <div class="section__a flex justify-between mb-14">
-    <p>05/30/2013</p>
-    <p>Holt Distributors Customer Open Order Report</p>
-    <p>Invoice No. : 11290</p>
+    <p>Holt Distributors Territory List</p>
+    <p>Date: {{ date("m-d-Y") }}</p>
   </div>
   <div class="section__b flex flex-col space-y-4">
 
-          <div class="container mx-auto bg-white py-8">
-            <div class="py-8">
+          <div class="container mx-auto bg-white">
+            <div>
               <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                 <div class="inline-block min-w-full rounded-sm overflow-hidden">
-                  <table class="min-w-full leading-normal mb-10 border">
+                  <table class="min-w-full leading-normal mb-10 border shadow-lg">
                     <thead>
                       <tr>
                         <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">

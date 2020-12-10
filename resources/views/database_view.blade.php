@@ -22,63 +22,63 @@
     <nav>
       <button
         x-on:click="tab = 'territory'"
-        x-bind:class="{ 'bg-yellow-500 font-bold font-bold': tab === 'territory' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold font-bold': tab === 'territory' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         territories
       </button>
       <button
         x-on:click="tab = 'sales-rep'"
-        x-bind:class="{ 'bg-yellow-500 font-bold border-white': tab === 'sales-rep' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold border-white': tab === 'sales-rep' }"
         class="bg-transparent text-sm py-2 focus:outline-none capitalize px-4"
       >
         sales reps
       </button>
 			<button
         x-on:click="tab = 'customers'"
-        x-bind:class="{ 'bg-yellow-500 font-bold': tab === 'customers' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold': tab === 'customers' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         customers
       </button>
       <button
         x-on:click="tab = 'parts'"
-        x-bind:class="{ 'bg-yellow-500 font-bold': tab === 'parts' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold': tab === 'parts' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         parts
       </button>
       <button
         x-on:click="tab = 'vendors'"
-        x-bind:class="{ 'bg-yellow-500 font-bold border-white': tab === 'vendors' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold border-white': tab === 'vendors' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         vendors
       </button>
 			<button
         x-on:click="tab = 'create_orders'"
-        x-bind:class="{ 'bg-yellow-500 font-bold': tab === 'create_orders' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold': tab === 'create_orders' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         Order
       </button>
 			<button
         x-on:click="tab = 'open_orders'"
-        x-bind:class="{ 'bg-yellow-500 font-bold': tab === 'open_orders' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold': tab === 'open_orders' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         open orders
       </button>
 			<button
         x-on:click="tab = 'invoice'"
-        x-bind:class="{ 'bg-yellow-500 font-bold': tab === 'invoice' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold': tab === 'invoice' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         invoices
       </button>
 			<button
         x-on:click="tab = 'reports'"
-        x-bind:class="{ 'bg-yellow-500 font-bold': tab === 'reports' }"
+        x-bind:class="{ 'bg-blue-700 text-white font-bold': tab === 'reports' }"
         class="bg-transparent text-sm px-4 py-2 focus:outline-none capitalize"
       >
         reports
@@ -97,11 +97,14 @@
 					<span class="text-gray-900">TerritoryName</span>
 					<input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="TerritoryName">
         </label>
-        <div class="flex justify-end space-x-1">
-          <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                Save
-              </button>
-        </div>
+        <div class="flex justify-end space-x-2">
+            <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
+                  Edit Territory
+                </button>
+            <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Save
+            </button>
+          </div>
 				</form>
 
 
@@ -118,7 +121,7 @@
           <select class="w-full border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" name="TerritoryNumber">
             <option>Choose a Territory</option>
             @foreach ($TerritoryData as $item)
-              <option value="$item->TerritoryNumber">{{ $item->TerritoryNumber }}-{{ $item->TerritoryName }}</option>
+              <option value="{{ $item->TerritoryNumber }}">{{ $item->TerritoryNumber }}-{{ $item->TerritoryName }}</option>
             @endforeach
           </select>
         </div>
@@ -162,11 +165,14 @@
           <span class="text-gray-900">SalesRepCommissionRate</span>
           <input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="SalesRepCommissionRate">
         </label>
-				<div class="flex justify-end space-x-1">
-          <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                Save
-              </button>
-        </div>
+				<div class="flex justify-end space-x-2">
+            <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
+                  Edit Sales Rep
+                </button>
+            <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Save
+            </button>
+          </div>
 				</form>
         </div>
       </li>
@@ -249,9 +255,14 @@
           <span class="text-gray-900">CustomerShipZip</span>
           <input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="CustomerShipZip">
         </label>
-				<button type="submit" class="block ml-auto mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-							Save
-						</button>
+				<div class="flex justify-end space-x-2">
+            <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
+                  Edit Customer
+                </button>
+            <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Save
+            </button>
+          </div>
 				</form>
         </div>
       </li>
@@ -290,9 +301,14 @@
             <input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="RecorderPoint">
           </label>
 
-          <button type="submit" class="block ml-auto mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                Save
-              </button>
+          <div class="flex justify-end space-x-2">
+            <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
+                  Edit Part
+                </button>
+            <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Save
+            </button>
+          </div>
           </form>
         </div>
       </li>
@@ -322,9 +338,23 @@
           <span class="text-gray-900">VendorZip</span>
           <input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="VendorZip">
         </label>
-				<button type="submit" class="block ml-auto mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-							Save
-						</button>
+        <div class="relative inline-flex flex-col">
+            <span class="text-gray-900">OrderNumber</span>
+            <select class="w-full border-2 border-blue-700 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-blue-700 focus:outline-none appearance-none" name="CustomerNumber">
+              <option>Choose a Customer</option>
+              @foreach ($OrderData as $item)
+                <option value="{{ $item->OrderNumber }}">Order # {{ $item->OrderNumber }}</option>
+              @endforeach
+            </select>
+          </div>
+				<div class="flex justify-end space-x-2">
+            <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
+                  Edit Vendor
+                </button>
+            <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Save
+            </button>
+          </div>
 				</form>
         </div>
       </li>
@@ -366,7 +396,7 @@
           </label>
           <div class="relative inline-flex flex-col" x-bind:class="{'hidden': !show}">
             <span class="text-gray-900">OrderNumber</span>
-            <select class="w-full border-2 border-blue-700 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-blue-700 focus:outline-none appearance-none" name="CustomerNumber">
+            <select class="w-full border-2 border-blue-700 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-blue-700 focus:outline-none appearance-none" name="OrderNumber">
               <option>Choose a Customer</option>
               @foreach ($OrderData as $item)
                 <option value="{{ $item->OrderNumber }}">Order # {{ $item->OrderNumber }}</option>
@@ -377,9 +407,9 @@
             <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
                   Edit Order
                 </button>
-            <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <button type="submit" class="block mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                   Save
-                </button>
+            </button>
           </div>
           </form>
         </div>
@@ -397,11 +427,14 @@
                 <table class="min-w-full leading-normal">
                   <thead>
                     <tr>
-                      <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                        Customer #
+                    <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                        Order No.
                       </th>
                       <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
-                        Customer PO #
+                        Customer No.
+                      </th>
+                      <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
+                        Customer PO No.
                       </th>
                       <th class="px-2 py-3 bg-gray-200 text-gray-900 border-b-2 text-left text-xs font-semibold uppercase tracking-wider">
                         Order Date
@@ -427,9 +460,17 @@
 
 
                   @foreach ($Invoices as $data)
-
                   <tbody>
                     <tr>
+                      <td class="py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="flex items-center">
+                          <div class="ml-3">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                              {{ $data->OrderNumber }}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
                       <td class="py-5 border-b border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
                           <div class="ml-3">
@@ -624,12 +665,12 @@
                         <div class="flex items-center">
                           <div class="ml-3">
                             <p class="text-gray-900 whitespace-no-wrap">
-                              <form action="/database_actions_order_status" x-ref="OrderStatusForm" method="POST">
+                              <form action="/database_actions_order_status/{{ $data->OrderNumber }}" x-ref="OrderStatusForm{{ $data->OrderNumber }}" method="POST">
                                 @csrf
                                 <input type="hidden" value="{{ $data->OrderNumber }}" name="OrderNumber">
                                 <input type="hidden" value="" name="OrderStatus">
                                 <div class="relative inline-flex flex-col">
-                                  <select class="w-full border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" @change="$refs.OrderStatusForm.OrderStatus.value = 'close'; $refs.OrderStatusForm.submit();">
+                                  <select class="w-full border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" @change="$refs.OrderStatusForm{{ $data->OrderNumber }}.submit();">
                                     <option value="open">Open</option>
                                     <option value="close">Close</option>
                                   </select>
@@ -660,14 +701,20 @@
       <li x-show="tab === 'reports'">
         <div class="container mx-auto px-4 sm:px-8 bg-white px-4 py-8 p-5 border-2" style="border: 1px solid #ccc">
           <h1 class="text-2xl font-extrabold">Open Orders</h1>
-          <div class="flex justify-end space-x-2">
-            <a href="/database_view_territory_list" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none hover:bg-blue-700 hover:text-white">
+          <div class="flex flex-col justify-end">
+            <a href="/database_view_territory_list" class="max-w-sm block mt-5 py-2 px-4 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-900 bg-white focus:outline-none hover:bg-black hover:text-white">
                   View Territory List
                 </a>
-            <a href="/database_view_customer_master_list" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none hover:bg-blue-700 hover:text-white">
+            <a href="/database_view_customer_master_list" class="max-w-sm block mt-5 py-2 px-4 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-900 bg-white focus:outline-none hover:bg-black hover:text-white">
                   View Customer Master List
                 </a>
-            <a href="/database_view_customer_mailing_labels" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none hover:bg-blue-700 hover:text-white">
+            <a href="/database_view_customer_open_order_report_by_customer" class="max-w-sm block mt-5 py-2 px-4 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-900 bg-white focus:outline-none hover:bg-black hover:text-white">
+              Customer Open Order Report By Customer
+            </a>
+            <a href="/database_view_customer_open_order_report_by_part" class="max-w-sm block mt-5 py-2 px-4 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-900 bg-white focus:outline-none hover:bg-black hover:text-white">
+              Customer Open Order Report By Part
+            </a>
+            <a href="/database_view_customer_mailing_labels" class="max-w-sm block mt-5 py-2 px-4 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-900 bg-white focus:outline-none hover:bg-black hover:text-white">
                   View Customer Mailing Labels
                 </a>
           </div>

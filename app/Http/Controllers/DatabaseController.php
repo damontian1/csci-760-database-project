@@ -89,6 +89,44 @@ class DatabaseController extends Controller
             'CustomerMasterList' => $CustomerMasterList
         ]);
     }
+    public function database_view_customer_open_order_report_by_customer(Request $request)
+    {
+        $OpenOrders  = DB::table('Part')
+            ->join('OrderPart', function ($join) {
+                $join->on('Part.PartNumber', '=', 'OrderPart.PartNumber');
+            })
+            ->join('Order', function ($join) {
+                $join->on('Order.OrderNumber', '=', 'OrderPart.OrderNumber')
+                ->where('OrderStatus', '=', 'open');
+            })
+            ->join('Customer', function ($join) {
+                $join->on('Order.CustomerNumber', '=', 'Customer.CustomerNumber');
+            })
+            ->get();
+        // dd($CustomerMasterList);
+        return view("database_view_customer_open_order_report_by_customer", [
+            'OpenOrders' => $OpenOrders
+        ]);
+    }
+    public function database_view_customer_open_order_report_by_part(Request $request)
+    {
+        $OpenOrders  = DB::table('Part')
+            ->join('OrderPart', function ($join) {
+                $join->on('Part.PartNumber', '=', 'OrderPart.PartNumber');
+            })
+            ->join('Order', function ($join) {
+                $join->on('Order.OrderNumber', '=', 'OrderPart.OrderNumber')
+                ->where('OrderStatus', '=', 'open');
+            })
+            ->join('Customer', function ($join) {
+                $join->on('Order.CustomerNumber', '=', 'Customer.CustomerNumber');
+            })
+            ->get();
+        // dd($CustomerMasterList);
+        return view("database_view_customer_open_order_report_by_part", [
+            'OpenOrders' => $OpenOrders
+        ]);
+    }
     public function database_view_invoice(Request $request, $id)
     {
         $Invoices = DB::table('Order')
@@ -145,7 +183,10 @@ class DatabaseController extends Controller
     }
     public function database_actions_sales_rep(Request $request)
     {
+        // $test = $request->input('TerritoryNumber');
+        // dd($test);
         // INSERT INTO SALES_REPS VALUES('12031', 'tom', 'hanks', '21 st.', 'new york', 'NY', '12313', 'kokok', 'jojoj', 23.2, 232.23, 34.22);
+        // converted to ORM syntax using: https://laravel.com/docs/8.x/queries#updating-json-columns and https://laravel.com/docs/8.x/blade#if-statements
         DB::table('SalesRep')->insert([
             [
                 'TerritoryNumber' => $request->input('TerritoryNumber'),
@@ -237,16 +278,18 @@ class DatabaseController extends Controller
         ]);
         return back()->with('success', 'Success!');
     }
-    public function database_actions_order_status(Request $request)
+    public function database_actions_order_status(Request $request, $id)
     {
         DB::table('Order')
-            ->where('OrderNumber', '=', $request->input('OrderNumber'))
+            ->where('OrderNumber', '=', $id)
             ->update([
-                'OrderStatus' => $request->input('OrderStatus'),
+                'OrderStatus' => 'close',
             ]);
 
-        // by this step, the invoice is closed.. so over here increase customer balance by order total
+        // by this step, the invoice is closed.. so over here increase customer currentBalance, invoiceTotal? by order total
 
+
+        // if u want to implement payment, when customer pay, reduce the currentBalancce and invoiceTotal
         return back()->with('success', 'Success!');
     }
 }

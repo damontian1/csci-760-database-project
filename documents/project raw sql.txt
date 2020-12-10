@@ -1,0 +1,210 @@
+--CREATE TERRITORIES TABLE
+CREATE TABLE Territory (
+TerritoryNumber INTEGER PRIMARY KEY AUTOINCREMENT, 
+TerritoryName VARCHAR(100)
+);
+
+--INSERT TERRITORIES VALUES
+INSERT INTO TERRITORIES VALUES ('1','Hicksville');
+
+
+
+
+
+
+--CREATE SALES_REP TABLE
+CREATE TABLE SalesRep
+(SalesRepNumber INTEGER PRIMARY KEY AUTOINCREMENT,
+SalesRepName VARCHAR(100),
+SalesRepAddress VARCHAR(100),
+SalesRepCity VARCHAR(100),
+SalesRepState VARCHAR(100),
+SalesRepZip VARCHAR(100),
+TerritoryNumber INTEGER,
+SalesRepMTDSales NUMBER(7,2),
+SalesRepYTDSales NUMBER(7,2),
+SalesRepMTDCommission NUMBER(7,2),
+SalesRepYTDCommission NUMBER(7,2),
+SalesRepCommissionRate NUMBER(3,2),
+CONSTRAINT fk_Territory_SalesRep FOREIGN KEY (TerritoryNumber)
+REFERENCES Territory(TerritoryNumber)
+);
+
+--INSERT SALES_REP VALUES
+INSERT INTO SalesRep
+VALUES('1', 'tom', 'hanks', '21 st.', 'new york', 'NY', '12313', '1', 200, 200, 232.23, 34.22, 34.22);
+
+
+
+
+
+
+--CREATE CUSTOMER TABLE
+CREATE TABLE Customer
+(CustomerNumber INTEGER PRIMARY KEY AUTOINCREMENT,
+CustomerFirstName VARCHAR(100) NOT NULL,
+CustomerLastName VARCHAR(100) NOT NULL,
+CustomerAddress VARCHAR(100),
+CustomerCity VARCHAR(100),
+CustomerState VARCHAR(100),
+CustomerZip VARCHAR(100),
+CustomerMTDSales NUMBER(7,2),
+CustomerYTDSales NUMBER(7,2),
+CurrentBalance NUMBER(7,2),
+CreditLimit NUMBER(7,2),
+CustomerShipFirstName VARCHAR(100),
+CustomerShipLastName VARCHAR(100),
+CustomerShipAddress VARCHAR(100),
+CustomerShipCity VARCHAR(100), 
+CustomerShipState VARCHAR(100),
+CustomerShipZip VARCHAR(100),
+SalesRepNumber INTEGER,
+CONSTRAINT fk_Customer_SalesRep FOREIGN KEY (SalesRepNumber)
+REFERENCES SalesRep(SalesRepNumber)
+);
+
+--INSERT CUSTOMER VALUES
+INSERT INTO Customer VALUES ('1','James','Lebron','23 King.ave', '6 Heat St.', 'Los Angles', 'CA', '003831', 2000, 2000, 2333.33,432.32,'2');
+
+
+
+
+
+
+--CREATE PARTS TABLE
+CREATE TABLE Part
+(PartNumber INTEGER PRIMARY KEY AUTOINCREMENT,
+PartDescription VARCHAR(100),
+PartPrice NUMBER(7,2), 
+PartMTDSales NUMBER(7,2),
+PartYTDSales NUMBER(7,2),
+UnitsOnHand INT,
+UnitsAllocated INT,
+RecorderPoint INT
+);
+
+--INSERT PARTS VALUES
+INSERT INTO Part VALUES ('1','Iron',2000,2000,3210,'2k2k',32.99, 2000);
+
+
+
+
+
+
+
+--CREATE VENDOR TABLE
+CREATE TABLE Vendor
+(VendorNumber INTEGER PRIMARY KEY AUTOINCREMENT,
+VendorName VARCHAR(100),
+VendorAddress VARCHAR(100),
+VendorCity VARCHAR(100),
+VendorState VARCHAR(100),
+VendorZip VARCHAR(100));
+
+
+--INSERT VENDOR VALUES
+INSERT INTO Vendor VALUES ('1','Kakarot','Kong','99 Island ave.', 'Tokyo','Mazakula','327000');
+
+
+
+
+
+
+
+
+--CREATE ORDER TABLE
+CREATE TABLE “Order”
+(OrderNumber INTEGER PRIMARY KEY AUTOINCREMENT,
+OrderDate DATE,
+CustomerNumber INTEGER,
+CustomerPONumber INTEGER,
+OrderStatus VARCHAR(100),
+CONSTRAINT fk_Order_Customer FOREIGN KEY (CustomerNumber)
+REFERENCES CUSTOMER(CustomerNumber)
+);
+
+--INSERT ORDER VALUES
+INSERT INTO ORDERS VALUES ('1','2019-01-01','1343232','iPhone 11 bomb * 2 as gift','1');
+
+
+
+
+
+
+--CREATE INVOICE TABLE
+
+CREATE TABLE Invoice
+(InvoiceNumber INTEGER PRIMARY KEY AUTOINCREMENT,
+ShipDate DATE,
+ShipCharge NUMBER(7,2),
+Tax NUMBER(7,2)
+);
+
+
+
+
+--CREATE ORDER_PART TABLE
+CREATE TABLE OrderPart
+(OrderPartNumber INTEGER PRIMARY KEY AUTOINCREMENT,
+OrderNumber INTEGER,
+PartNumber INTEGER,
+NumberOrdered NUMBER(7,2),
+CONSTRAINT fk_OP_Order FOREIGN KEY (OrderNumber)
+REFERENCES “Order”(OrderNumber)
+CONSTRAINT fk_OP_Part FOREIGN KEY (PartNumber)
+REFERENCES Part(PartNumber)
+);
+
+
+
+
+-----------------------------
+
+
+
+--CREATE VENDORS-PART TABLE
+CREATE TABLE VENDORS_PARTS
+(VID CHAR(6),
+PID CHAR(6),
+VP_PRICE DECIMAL(6.2),
+MIN_ORDER_QUANTITY DECIMAL(6.0),
+LEAD_TIME CHAR(25),
+CONSTRAINT fk_VP_VENDOR FOREIGN KEY (VID)
+REFERENCES PARTS(VID)
+CONSTRAINT fk_VP_PART FOREIGN KEY (PID)
+REFERENCES PARTS(PID)
+);
+
+--CREATE PAYMENT TABLE
+CREATE TABLE "Payment"
+(PaymentNumber INT,
+CustomerNumber INT,
+PaymentDate DATE,
+Amount DECIMAL(6.2),
+CONSTRAINT fk_Payment_Customer FOREIGN KEY (CustomerNumber)
+REFERENCES CUSTOMERS(CustomerNumber)
+);
+
+--How to create INVOICE?
+--When we wnanna call an invoice up, we need a ORDERS ID and create INVOICE NO automatically.
+--1. Get ORDER Information
+SELECT OID, DATE, POID, CID, DETAIL
+FROM ORDERS
+WHERE OID='20320';/*ORDERID INPUT*/
+--2. Get CUSTOMER information by CID ABOVE
+SELECT FirstLineADR, SecondLineADR, CITY, STATE, ZIP_CODE, SID
+FROM CUSTOMERS
+WHERE CID='213'
+--3. Get SALES_REPS information by SID ABOVE
+SELECT LAST, FIRST, STREET, CITY, STATE, ZIP_CODE
+FROM SALES_REPS
+WHERE SID='12031'
+--4. GET PARTS information by OID above
+SELECT PID, PART_QUATITY_ORDER, PART_QUATITY_SHIPPED, PART_SALES_PRICE
+FROM ORDERS_PARTS
+WHERE OID='20320' 
+/*NOTE: one order can include multiple parts, query each part saparately, use for loop to Show*/
+--5. GET Veder information from CID
+SELECT 
+--5.INSERT data to INVOICE table and show INVOICE up
+
