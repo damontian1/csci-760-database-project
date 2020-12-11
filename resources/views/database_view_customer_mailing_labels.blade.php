@@ -14,7 +14,7 @@
     @foreach ($CustomerMailingLabels as $data)
 
     <div class="border border-gray-500 p-4 rounded-sm shadow-lg">
-      <p class="uppercase font-bold mb-1">Customer # {{ $data->CustomerNumber }}</p>
+      <!-- <p class="uppercase font-bold mb-1">Customer # {{ $data->CustomerNumber }}</p> -->
       <p class="text-gray-700">
         {{ $data->CustomerShipFirstName }} {{ $data->CustomerShipLastName }}
         <br>

@@ -338,15 +338,6 @@
           <span class="text-gray-900">VendorZip</span>
           <input type="text" class="border-gray-300 mt-1 block w-full shadow-sm" name="VendorZip">
         </label>
-        <div class="relative inline-flex flex-col">
-            <span class="text-gray-900">OrderNumber</span>
-            <select class="w-full border-2 border-blue-700 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-blue-700 focus:outline-none appearance-none" name="CustomerNumber">
-              <option>Choose a Customer</option>
-              @foreach ($OrderData as $item)
-                <option value="{{ $item->OrderNumber }}">Order # {{ $item->OrderNumber }}</option>
-              @endforeach
-            </select>
-          </div>
 				<div class="flex justify-end space-x-2">
             <button type="button" @click="show = !show" class="block mt-5 py-2 px-4 border border-blue-700 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white focus:outline-none">
                   Edit Vendor
